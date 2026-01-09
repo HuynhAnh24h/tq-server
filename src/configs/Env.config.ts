@@ -16,6 +16,10 @@ const Env = {
     NODE_ENV: process.env.NODE_ENV,
 
 
-   WHITELISTED_DOMAINS: process.env.WHITELISTED_DOMAINS?.split(",") || []
+   WHITELISTED_DOMAINS: process.env.WHITELISTED_DOMAINS?.split(",") || [],
+   DB_USERNAME: process.env.DB_USERNAME,
+   DB_PASSWORD: process.env.DB_PASSWORD,
+
+   LOG_LEVEL: process.env.LOG_LEVEL
 }
 export default Env

@@ -12,10 +12,12 @@ import helmet from 'helmet';
 
 // Custonm modules
 import Env from '@/configs/Env.config';
-import Limiter from '@/lib/express-rate-limit';
+import Limiter from '@/lib/ExpressRateLimit'
+import Logger from '@/lib/Winston.lib';
 
 // Router
 import v1Router from '@/routes/index';
+import { Database, DisconnectDB} from '@/configs/DB.config';
 
 // Express Init App
 
@@ -32,6 +34,7 @@ const corsOptions: CorsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'));
     }
+    Logger.warn(`CORS error: ${origin} is not allowed by CORS`)
   },
   credentials: Env.CORS_CREDENTIALS === 'true',
   methods: Env.CORS_METHODS?.split(',') || ['GET', 'POST'],
@@ -54,16 +57,20 @@ app.use(Limiter);
 // Sample Route
 (async () => {
   try {
+    await Database();
     app.use('/api/v1', v1Router);
 
     // Start Server
     app.listen(Env.PORT, () => {
-      console.log(`Server is running on port http://localhost:${Env.PORT}`);
+      Logger.info(`Server is running on port http://localhost:${Env.PORT}`);
     });
+
   } catch (error) {
-    console.error('Error during server initialization:', error);
+
+    Logger.error('Error during server initialization:', error);
+
     if(Env.NODE_ENV === 'production') {
-      console.error('Server failed to start in production mode.');
+      Logger.error('Server failed to start in production mode.');
       process.exit(1);
     }   
   }
@@ -75,10 +82,12 @@ app.use(Limiter);
  */
 const HandleShutdown = async() => {
     try{
-        console.log("Server SHUTDOWN")
+        await DisconnectDB();
+        
+        Logger.warn("Server SHUTDOWN")
         process.exit(0);
     }catch(err){
-        console.error('Error during server shutdown:', err);
+        Logger.error('Error during server shutdown:', err);
     }
 }
 

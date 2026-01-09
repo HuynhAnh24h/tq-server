@@ -6,6 +6,14 @@
 // Nodemodules
 import { Router } from "express"
 
+
+// App Routes
+import AuthRoutes from "./v1/AuthRoute"
+import BlogRouter from "./v1/BlogRoute"
+import DashboardRoute from "./v1/DashboardRoute"
+import LandingRoute from "./v1/LandingRoute"
+import ProductRoute from "./v1/ProductRoute"
+
 const router = Router()
 
 // Root Route
@@ -19,5 +27,10 @@ router.get('/', (req, res) => {
     })
 })
 
+router.use("/auth",AuthRoutes)
+router.use("/blog",BlogRouter)
+router.use("/dashboard", DashboardRoute)
+router.use("/landing-page", LandingRoute)
+router.use("/product", ProductRoute)
 
 export default router
