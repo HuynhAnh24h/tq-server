@@ -3,8 +3,14 @@
  * @license Apache-2.0
  */
 
+// Node Module
 import { Router } from "express"
 import type { Request, Response } from "express"
+
+// Controller
+import AuthController from "@/controllers/v1/AuthController"
+
+// Middleware
 
 const AuthRoutes = Router()
 
@@ -24,6 +30,7 @@ AuthRoutes.get('/',(req: Request,res:Response)=>{
     }
 })
 
-
+AuthRoutes.post('/register', AuthController.Register)
+AuthRoutes.post('/login', AuthController.Login)
 
 export default AuthRoutes
