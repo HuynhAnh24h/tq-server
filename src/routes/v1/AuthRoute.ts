@@ -5,12 +5,22 @@
 
 // Node Module
 import { Router } from "express"
+
+// Types
 import type { Request, Response } from "express"
 
 // Controller
-import AuthController from "@/controllers/v1/AuthController"
+import Register from "@/controllers/v1/auth/Register"
+import Login from "@/controllers/v1/auth/Login"
+import RefreshToken from "@/controllers/v1/auth/RefreshToken"
+import Logout from "@/controllers/v1/auth/Logout"
 
 // Middleware
+import ValidationError from "@/middlewares/ValidateMiddleware"
+
+// Validate
+import { LoginValidateSchema, RefreshTokenValidateSchema, RegisterValidateSchema } from "@/validator/UserValidator"
+
 
 const AuthRoutes = Router()
 
@@ -30,7 +40,9 @@ AuthRoutes.get('/',(req: Request,res:Response)=>{
     }
 })
 
-AuthRoutes.post('/register', AuthController.Register)
-AuthRoutes.post('/login', AuthController.Login)
+AuthRoutes.post('/register', RegisterValidateSchema , ValidationError , Register)
+AuthRoutes.post('/login',LoginValidateSchema, ValidationError, Login) 
+AuthRoutes.post('/refresh-token',RefreshTokenValidateSchema, ValidationError,RefreshToken)
+AuthRoutes.post('/logout',Logout)
 
 export default AuthRoutes

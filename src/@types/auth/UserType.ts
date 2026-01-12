@@ -12,5 +12,9 @@ export interface IUser{
         instagram?:string,
         twitter?:string,
         tiktok?:string
-    }
+    },
+    comparePassword(candidatePassword: string): Promise<boolean>;
 }
+
+export type UserRegister = Pick<IUser, "email" | "password" | "role">
+export type UserLogin = Pick<IUser, "email" | "password">
