@@ -7,7 +7,7 @@
 import type { Request, Response } from "express"
 
 // Type
-import { UserLogin } from "@/@types/auth/UserType"
+import { UserLogin } from "@/types/auth/UserType"
 
 // Model
 import UserModel from "@/model/UserModel"

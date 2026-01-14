@@ -7,7 +7,7 @@
 import {Schema, model} from "mongoose"
 
 // Types
-import type { IToken } from "@/@types/auth/TokenType"
+import type { IToken } from "@/types/auth/TokenType"
 
 const TokenSchema = new Schema<IToken>({
     userId:{

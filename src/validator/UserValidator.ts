@@ -3,12 +3,11 @@
  * @license Apache-2.0
  */
 import { body, cookie } from 'express-validator';
-import bcrypt from "bcrypt"
 
-// Model 
+// Model
 import UserModel from '@/model/UserModel';
 
-import type { UserLogin } from '@/@types/auth/UserType';
+import type { UserLogin } from '@/types/auth/UserType';
 
 export const RegisterValidateSchema = [
   body('email')
@@ -19,11 +18,11 @@ export const RegisterValidateSchema = [
     .withMessage('Email must be less than 50 characters')
     .isEmail()
     .withMessage('Invalid email address')
-    .custom(async(value)=>{
-        const exsitsUser = await UserModel.exists({emial: value})
-        if(exsitsUser){
-            throw new Error('User email or password is in valid')
-        }
+    .custom(async (value) => {
+      const exsitsUser = await UserModel.exists({ emial: value });
+      if (exsitsUser) {
+        throw new Error('User email or password is in valid');
+      }
     }),
   body('password')
     .trim()
@@ -35,12 +34,12 @@ export const RegisterValidateSchema = [
     .optional()
     .isString()
     .withMessage('Role musbe a string')
-    .isIn(['admin','manager','user'])
-    .withMessage('Role must be either admin, user, manager')
+    .isIn(['admin', 'manager', 'user'])
+    .withMessage('Role must be either admin, user, manager'),
 ];
 
 export const LoginValidateSchema = [
-    body('email')
+  body('email')
     .trim()
     .notEmpty()
     .withMessage('Email is required')
@@ -52,23 +51,70 @@ export const LoginValidateSchema = [
     .withMessage('Password is required')
     .isLength({ min: 6, max: 100 })
     .withMessage('Password must be between 6 and 100 characters')
-    .custom(async(value,{req})=>{
-        const {email} = req.body as UserLogin
-        const user =await UserModel.findOne({email}).select('password').exec()
-        if(!user){
-            throw new Error('User email or password is invalid')
-        }
-        const passwordMatch = await user.comparePassword(value)
-        if(!passwordMatch){
-            throw new Error('Password is not match')
-        }
+    .custom(async (value, { req }) => {
+      const { email } = req.body as UserLogin;
+      const user = await UserModel.findOne({ email }).select('password').exec();
+      if (!user) {
+        throw new Error('User email or password is invalid');
+      }
+      const passwordMatch = await user.comparePassword(value);
+      if (!passwordMatch) {
+        throw new Error('Password is not match');
+      }
     }),
-]
+];
 
 export const RefreshTokenValidateSchema = [
-    cookie('refreshToken')
-        .notEmpty()
-        .withMessage('Refresh token required')
-        .isJWT()
-        .withMessage('Invalid refresh token')
-]
+  cookie('refreshToken')
+    .notEmpty()
+    .withMessage('Refresh token required')
+    .isJWT()
+    .withMessage('Invalid refresh token'),
+];
+
+export const UpdateUserValidateSchema = [
+  body('username')
+    .optional()
+    .isString()
+    .withMessage('Username must be a string')
+    .isLength({ min: 3 })
+    .withMessage('Username must be at least 3 characters'),
+  body('email').optional().isEmail().withMessage('Invalid email format'),
+  body('password')
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters'),
+  body('role')
+    .optional()
+    .isIn(['admin', 'manager', 'content', 'user'])
+    .withMessage('Invalid role'),
+  body('firstName')
+    .optional()
+    .isString()
+    .withMessage('First name must be a string'),
+  body('lastName')
+    .optional()
+    .isString()
+    .withMessage('Last name must be a string'),
+  body('phone')
+    .optional()
+    .isMobilePhone('vi-VN')
+    .withMessage('Invalid Vietnamese phone number'),
+  body('address').optional().isString().withMessage('Address must be a string'),
+  body('socialLinks.facebook')
+    .optional()
+    .isURL()
+    .withMessage('Facebook link must be a valid URL'),
+  body('socialLinks.instagram')
+    .optional()
+    .isURL()
+    .withMessage('Instagram link must be a valid URL'),
+  body('socialLinks.twitter')
+    .optional()
+    .isURL()
+    .withMessage('Twitter link must be a valid URL'),
+  body('socialLinks.tiktok')
+    .optional()
+    .isURL()
+    .withMessage('Tiktok link must be a valid URL'),
+];

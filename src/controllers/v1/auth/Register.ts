@@ -18,7 +18,7 @@ import UserModel from '@/model/UserModel';
 import TokenModel from '@/model/TokenModel';
 
 // Types
-import type { UserRegister } from '@/@types/auth/UserType';
+import type { UserRegister } from '@/types/auth/UserType';
 
 
 

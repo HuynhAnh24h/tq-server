@@ -7,7 +7,7 @@ import {Schema, model} from "mongoose"
 import bcrypt from "bcrypt"
 
 // Type
-import type { IUser } from "@/@types/auth/UserType"
+import type { IUser } from "@/types/auth/UserType"
 
 const UserSchema = new Schema<IUser>({
     username:{
@@ -25,7 +25,7 @@ const UserSchema = new Schema<IUser>({
     },
     role:{
         type: String,
-        enum: ["admin","manager","user"],
+        enum: ["admin","manager","content","user"],
         default: "user"
     },
     firstName: {

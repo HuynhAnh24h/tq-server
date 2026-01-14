@@ -17,6 +17,7 @@ import Logout from "@/controllers/v1/auth/Logout"
 
 // Middleware
 import ValidationError from "@/middlewares/ValidateMiddleware"
+import Authenticate from "@/middlewares/Auth/AuthenticateMiddleware"
 
 // Validate
 import { LoginValidateSchema, RefreshTokenValidateSchema, RegisterValidateSchema } from "@/validator/UserValidator"
@@ -43,6 +44,6 @@ AuthRoutes.get('/',(req: Request,res:Response)=>{
 AuthRoutes.post('/register', RegisterValidateSchema , ValidationError , Register)
 AuthRoutes.post('/login',LoginValidateSchema, ValidationError, Login) 
 AuthRoutes.post('/refresh-token',RefreshTokenValidateSchema, ValidationError,RefreshToken)
-AuthRoutes.post('/logout',Logout)
+AuthRoutes.get('/logout',Authenticate,Logout)
 
 export default AuthRoutes

@@ -12,9 +12,28 @@ import TokenModel from "@/model/TokenModel"
 
 // Types
 import type { Request, Response } from "express"
+import { Types } from "mongoose"
+
 
 const Logout = async (req: Request, res: Response) =>{
     try{
+        const refreshToken = req.cookies.refreshToken as string
+        if(refreshToken){
+            await TokenModel.deleteOne({token: refreshToken})
+            Logger.info("User refresh token deleted success",{
+                userId: req.userId as Types.ObjectId,
+                token: refreshToken
+            })
+            res.clearCookie('refreshToken',{
+                httpOnly: true,
+                secure: Env.NODE_ENV === 'production',
+                sameSite: 'strict'
+            })
+        }
+        res.sendStatus(204)
+        Logger.info('User logout success',{
+            userId: req.userId as Types.ObjectId
+        })
 
     }catch(error){
         Logger.error('Error during user Logout: ', error)

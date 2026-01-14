@@ -8,7 +8,10 @@ import { Router } from "express"
 
 
 // App Routes
-import AuthRoutes from "./v1/AuthRoute"
+import AuthRoutes from "./v1/auth/AuthRoute"
+import UserRoutes from "./v1/auth/UserRoute"
+
+
 import BlogRouter from "./v1/BlogRoute"
 import DashboardRoute from "./v1/DashboardRoute"
 import LandingRoute from "./v1/LandingRoute"
@@ -27,7 +30,12 @@ router.get('/', (req, res) => {
     })
 })
 
+
+// Auth And User
 router.use("/auth",AuthRoutes)
+router.use("/user", UserRoutes)
+
+
 router.use("/blog",BlogRouter)
 router.use("/dashboard", DashboardRoute)
 router.use("/landing-page", LandingRoute)
