@@ -3,6 +3,9 @@
  * @license Apache-2.0
  */
 
+import CreateBlogCategory from "@/controllers/v1/Blog/CreateBlogCategory"
+import Authenticate from "@/middlewares/Auth/AuthenticateMiddleware"
+import Authorize from "@/middlewares/Auth/AuthorizeMiddleware"
 import { Router } from "express"
 
 import type {Request, Response} from "express"
@@ -23,6 +26,8 @@ BlogRouter.get('/',(req: Request,res: Response)=>{
         })
     }
 })
+
+BlogRouter.post('/create-blog-category', Authenticate, Authorize(['admin','manager','content']), CreateBlogCategory)
 
 
 export default BlogRouter
