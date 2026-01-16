@@ -37,6 +37,10 @@ const Env = {
    REFRESH_TOKEN_EXPIRE: process.env.REFRESH_TOKEN_EXPIRE as ms.StringValue,
 
    // Hash
-   SALT_ROUND: process.env.BCRYPT_SALT_ROUND
+   SALT_ROUND: process.env.BCRYPT_SALT_ROUND,
+
+   // Query limit
+   DEFAULT_RES_LIMIT:20,
+   DEFAULT_RES_OFFSET:0
 }
 export default Env

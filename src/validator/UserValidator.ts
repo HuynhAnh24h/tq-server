@@ -2,7 +2,7 @@
  * @copyright 2025 Huynh Anh Developer
  * @license Apache-2.0
  */
-import { body, cookie } from 'express-validator';
+import { body, cookie, param, query } from 'express-validator';
 
 // Model
 import UserModel from '@/model/UserModel';
@@ -118,3 +118,21 @@ export const UpdateUserValidateSchema = [
     .isURL()
     .withMessage('Tiktok link must be a valid URL'),
 ];
+
+export const GetAllUserValidateSchema = [
+  query('limit')
+    .optional()
+    .isInt({min:1, max: 50})
+    .withMessage('Limit must be between 1 to 50'),
+  query('offset')
+    .optional()
+    .isInt({min:0})
+    .withMessage("Offset must be a positive integer")
+]
+
+export const GetOneUserIdValidateSchema = [
+  param('userId')
+    .notEmpty()
+    .isMongoId()
+    .withMessage('Invalid user Id')
+]

@@ -16,7 +16,10 @@ import Authorize from '@/middlewares/Auth/AuthorizeMiddleware'
 import ValidationError from '@/middlewares/ValidateMiddleware'
 
 // Error Schema Validation
-import { UpdateUserValidateSchema } from '@/validator/UserValidator'
+import { GetAllUserValidateSchema, UpdateUserValidateSchema } from '@/validator/UserValidator'
+import DeleteUser from '@/controllers/v1/user/DeleteUser'
+import GetAllUser from '@/controllers/v1/user/GetAllUser'
+import GetOneUser from '@/controllers/v1/user/GetOneUser'
 
 const UserRouters = Router();
 
@@ -36,5 +39,26 @@ UserRouters.put(
   Authorize(['admin', 'manager', 'content', 'user']),
   UpdateCurrentUser,
 );
+
+UserRouters.delete('/delete-user',
+  Authenticate, Authorize(['admin']),
+  DeleteUser
+)
+
+UserRouters.get("/get-all-user", 
+  GetAllUserValidateSchema, 
+  ValidationError,
+  Authenticate, 
+  Authorize(['admin']),
+  GetAllUser
+)
+
+UserRouters.get("/get-one-user/:userId", 
+  GetAllUserValidateSchema,
+  ValidationError, 
+  Authenticate, 
+  Authorize(['admin']), 
+  GetOneUser
+)
 
 export default UserRouters;

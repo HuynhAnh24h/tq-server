@@ -21,6 +21,7 @@ import Authenticate from "@/middlewares/Auth/AuthenticateMiddleware"
 
 // Validate
 import { LoginValidateSchema, RefreshTokenValidateSchema, RegisterValidateSchema } from "@/validator/UserValidator"
+import Authorize from "@/middlewares/Auth/AuthorizeMiddleware"
 
 
 const AuthRoutes = Router()
@@ -41,7 +42,7 @@ AuthRoutes.get('/',(req: Request,res:Response)=>{
     }
 })
 
-AuthRoutes.post('/register', RegisterValidateSchema , ValidationError , Register)
+AuthRoutes.post('/register', RegisterValidateSchema , ValidationError, Authenticate, Authorize(['admin']) , Register)
 AuthRoutes.post('/login',LoginValidateSchema, ValidationError, Login) 
 AuthRoutes.post('/refresh-token',RefreshTokenValidateSchema, ValidationError,RefreshToken)
 AuthRoutes.get('/logout',Authenticate,Logout)
